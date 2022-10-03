@@ -18,7 +18,7 @@ class User < ApplicationRecord
 
   validates :email, uniqueness: true
 
-  validates :country, inclusion: { in: COUNTRIES }
+
   validates :type, inclusion: { in: %w[corporation client] }
 
   enum type: { corporation: 0, client: 1 }
@@ -270,4 +270,7 @@ class User < ApplicationRecord
   "Zambia",
   "Zimbabwe"
 ]
+
+  validates :country, inclusion: { in: COUNTRIES }
+
 end
