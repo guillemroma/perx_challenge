@@ -5,8 +5,6 @@ class Transaction < ApplicationRecord
   validates :country, presence: true
   validates :date, presence: true
 
-  validates :country, inclusion: { in: COUNTRIES }
-
   COUNTRIES = [
   "Afghanistan",
   "Aland Islands",
@@ -254,4 +252,7 @@ class Transaction < ApplicationRecord
   "Zambia",
   "Zimbabwe"
 ]
+
+  validates :country, inclusion: { in: COUNTRIES }
+
 end
