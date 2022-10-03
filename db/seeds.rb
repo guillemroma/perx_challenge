@@ -11,17 +11,40 @@ puts "DB cleaned!"
 
 puts "Creating Admins"
 n = 1
-10.times do
+1.times do
   User.create!(
     email: "user_#{n}@gmail.com",
     password: 123456,
-    type: 0,
+    user_type: 0,
     birthday: Faker::Date.birthday,
     country: User::COUNTRIES.sample
   )
-
   n += 1
 end
-puts "#{User.where(type: 0).count} Admins created"
 
-puts "Creating Admins"
+puts "#{User.where(user_type: 0).count} Admins created"
+
+puts "Creating Users"
+
+5.times do
+  User.create!(
+    email: "user_#{n}@gmail.com",
+    password: 123456,
+    user_type: 1,
+    birthday: Faker::Date.birthday,
+    country: User::COUNTRIES.sample
+  )
+  n += 1
+end
+
+puts "#{User.where(user_type: 1).count} Admins created"
+
+puts "Creating transactions"
+
+User.where(user_type: 1).each do |user|
+  10.times do
+    Transaction.create!(user: user, country: User::COUNTRIES.sample, amount: rand(1..1_000), date: Time.now - rand(1..100))
+  end
+end
+
+puts "#{Transaction.count} transactions were created"

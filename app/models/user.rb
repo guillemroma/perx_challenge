@@ -14,7 +14,7 @@ class User < ApplicationRecord
   validates :email, presence: true
   validates :country, presence: true
   validates :birthday, presence: true
-  validates :type, presence: true
+  validates :user_type, presence: true
 
   validates :email, uniqueness: true
 
@@ -272,5 +272,7 @@ class User < ApplicationRecord
 ]
 
   validates :country, inclusion: { in: COUNTRIES }
+
+  scope :clients, -> { where(user_type: "client") }
 
 end
