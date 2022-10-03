@@ -19,9 +19,9 @@ class User < ApplicationRecord
   validates :email, uniqueness: true
 
 
-  validates :type, inclusion: { in: %w[corporation client] }
+  validates :user_type, inclusion: { in: %w[corporation client] }
 
-  enum type: { corporation: 0, client: 1 }
+  enum user_type: { corporation: 0, client: 1 }
 
   COUNTRIES = [
   "Afghanistan",
