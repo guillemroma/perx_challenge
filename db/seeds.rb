@@ -15,7 +15,7 @@ n = 1
   User.create!(
     email: "user_#{n}@gmail.com",
     password: 123456,
-    user_type: 0,
+    user_type: "corporation",
     birthday: Faker::Date.birthday,
     country: User::COUNTRIES.sample
   )
@@ -30,7 +30,7 @@ puts "Creating Users"
   User.create!(
     email: "user_#{n}@gmail.com",
     password: 123456,
-    user_type: 1,
+    user_type: "client",
     birthday: Faker::Date.birthday,
     country: User::COUNTRIES.sample
   )

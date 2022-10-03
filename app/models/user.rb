@@ -4,11 +4,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :points, dependent: :destroy
   has_many :rewards, dependent: :destroy
   has_many :transactions, dependent: :destroy
   has_many :point_records, dependent: :destroy
 
+  has_one :point, dependent: :destroy
   has_one :membership, dependent: :destroy
 
   validates :email, presence: true
@@ -18,10 +18,7 @@ class User < ApplicationRecord
 
   validates :email, uniqueness: true
 
-
   validates :user_type, inclusion: { in: %w[corporation client] }
-
-  enum user_type: { corporation: 0, client: 1 }
 
   COUNTRIES = [
   "Afghanistan",
@@ -274,5 +271,4 @@ class User < ApplicationRecord
   validates :country, inclusion: { in: COUNTRIES }
 
   scope :clients, -> { where(user_type: "client") }
-
 end

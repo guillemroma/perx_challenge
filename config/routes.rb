@@ -6,7 +6,10 @@ Rails.application.routes.draw do
   resources :users, only: [:new, :create, :show, :index, :edit, :update, :destroy] do
     resources :transactions, only: [:index, :create, :new]
   end
-  namespace :dashboard, only:[] do
+
+  resources :dashboards, only: [:new]
+
+  namespace :dashboards, only: [] do
     resources :users, only: [:show]
   end
 end
