@@ -26,7 +26,6 @@ ActiveRecord::Schema.define(version: 2022_10_03_101625) do
     t.string "country"
     t.string "type"
     t.date "birthday"
-    t.datetime "registration_date"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
