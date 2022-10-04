@@ -6,4 +6,7 @@ class Reward < ApplicationRecord
   validates :free_movie_tickets, presence: true
   validates :airport_lounge_access, presence: true
 
+  def self.check_birthday
+    
+  end
 end
