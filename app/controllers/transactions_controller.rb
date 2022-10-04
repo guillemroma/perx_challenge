@@ -1,5 +1,5 @@
 class TransactionsController < ApplicationController
-  after_action :update_user_reward, only: [:create]
+  after_action :update_user_rewards, only: [:create]
   after_action :update_user_points, only: [:create]
 
   def index
@@ -14,10 +14,10 @@ class TransactionsController < ApplicationController
     service = CreateTransaction.new(transaction_create_params)
 
     if service.call
-      flash[:alert] = "Transaction was successfully created"
+      success_flash_message(:alert, "Transaction was successfully created")
       redirect_to(users_path)
     else
-      flash[:alert] = service.errors
+      error_flash_message(:alert, service.errors)
       redirect_to(new_user_path)
     end
   end
@@ -33,11 +33,9 @@ class TransactionsController < ApplicationController
     service = UpdateUserPoints.new(update_user_points_and_rewards_params)
 
     if service.call
-      flash[:alert] = "User was successfully created"
-      redirect_to(users_path)
+      success_flash_message(:alert, "Points were successfully created")
     else
-      flash[:alert] = service.errors
-      redirect_to(new_user_path)
+      error_flash_message(:alert, service.errors)
     end
   end
 
@@ -45,15 +43,23 @@ class TransactionsController < ApplicationController
     service = UpdateUserRewards.new(update_user_points_and_rewards_params)
 
     if service.call
-      flash[:alert] = "User was successfully created"
-      redirect_to(users_path)
+      success_flash_message(:alert, "Rewards were successfully created")
     else
-      flash[:alert] = service.errors
-      redirect_to(new_user_path)
+      error_flash_message(:alert, service.errors)
     end
   end
 
   def update_user_points_and_rewards_params
     params["user_id"]
+  end
+
+  def success_flash_message(type, text)
+    flash[type] ||= []
+    flash[type] << text
+  end
+
+  def error_flash_message(type, text)
+    flash[type] ||= []
+    flash[type] << text
   end
 end

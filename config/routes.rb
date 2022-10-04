@@ -12,4 +12,9 @@ Rails.application.routes.draw do
   namespace :dashboard, only: [] do
     resources :users, only: [:show]
   end
+
+  require "sidekiq/web"
+  authenticate :user, ->(user) { user.user_type == "corporation" } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 end

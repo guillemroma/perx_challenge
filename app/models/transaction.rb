@@ -254,5 +254,4 @@ class Transaction < ApplicationRecord
 ]
 
   validates :country, inclusion: { in: COUNTRIES }
-
 end

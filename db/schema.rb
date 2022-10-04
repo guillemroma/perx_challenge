@@ -44,10 +44,10 @@ ActiveRecord::Schema.define(version: 2022_10_03_103923) do
 
   create_table "rewards", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.boolean "free_coffee"
-    t.boolean "cash_rebate"
-    t.boolean "free_movie_tickets"
-    t.boolean "airport_lounge_access"
+    t.boolean "free_coffee", default: false
+    t.boolean "cash_rebate", default: false
+    t.boolean "free_movie_tickets", default: false
+    t.boolean "airport_lounge_access", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_rewards_on_user_id"
