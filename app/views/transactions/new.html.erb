@@ -1,2 +1,30 @@
-<h1>Transactions#create</h1>
-<p>Find me in app/views/transactions/create.html.erb</p>
+<div class="row">
+  <div class="col-4"></div>
+  <div class="col-4 mt-5">
+    <h2><strong>Create new</strong> Transaction for <%= @user.email %></h2>
+
+    <%= simple_form_for(@transaction, url: user_transactions_path(@user), method: :post) do |f| %>
+      <%= f.error_notification %>
+
+      <div class="form-inputs">
+        <%= f.input :amount,
+                    required: true,
+                    autofocus: true,
+                    input_html: { autocomplete: "amount" }%>
+        <%= f.input :country, required: true, autofocus: true do %>
+          <br><%= f.select(:country, User::COUNTRIES.map{ |country| country }, {},{ class: 'form-control custom-drop-icon'})%>
+        <% end %>
+        <%= f.input :date,
+                    as: :date,
+                    required: true,
+                    autofocus: true,
+                    html5: true,
+                    input_html: { autocomplete: "date" }%>
+      </div>
+
+      <div class="form-actions">
+        <%= f.button :submit, "Create", class: "btn btn-dark"  %>
+      </div>
+    <% end %>
+  </div>
+</div>

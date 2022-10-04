@@ -11,16 +11,15 @@ puts "DB cleaned!"
 
 puts "Creating Admins"
 n = 1
-1.times do
-  User.create!(
-    email: "user_#{n}@gmail.com",
-    password: 123456,
-    user_type: "corporation",
-    birthday: Faker::Date.birthday,
-    country: User::COUNTRIES.sample
-  )
-  n += 1
-end
+
+User.create!(
+  email: "user_#{n}@gmail.com",
+  password: 123456,
+  user_type: "corporation",
+  birthday: Faker::Date.birthday,
+  country: User::COUNTRIES.sample
+)
+n += 1
 
 puts "#{User.where(user_type: 0).count} Admins created"
 

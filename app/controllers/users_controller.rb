@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_action :check_authorization
+
   def index
     @clients = User.clients.includes(:point)
   end
@@ -19,6 +21,7 @@ class UsersController < ApplicationController
     service = UpdateUser.new(user_create_and_update_params.merge(id: params[:id]))
 
     if service.call
+      flash[:alert] = "User was successfully updated"
       redirect_to(users_path)
     else
       flash[:alert] = service.errors
@@ -30,6 +33,7 @@ class UsersController < ApplicationController
     service = CreateUser.new(user_create_and_update_params)
 
     if service.call
+      flash[:alert] = "User was successfully created"
       redirect_to(users_path)
     else
       flash[:alert] = service.errors
@@ -40,12 +44,19 @@ class UsersController < ApplicationController
   def destroy
     service = DestroyUser.new(params[:id])
 
-    flash[:alert] = service.errors unless service.call
-
+    if service.call
+      flash[:alert] = "User was successfully deleted"
+    else
+      flash[:alert] = service.errors
+    end
     redirect_to(users_path)
   end
 
   private
+
+  def check_authorization
+    authorize User
+  end
 
   def user_create_and_update_params
     params.require(:user).permit(:email, :country, :birthday, :user_type, :password)

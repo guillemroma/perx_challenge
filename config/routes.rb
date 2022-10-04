@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   resources :dashboards, only: [:new]
 
-  namespace :dashboards, only: [] do
+  namespace :dashboard, only: [] do
     resources :users, only: [:show]
   end
 end
