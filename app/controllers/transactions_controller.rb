@@ -1,4 +1,5 @@
 class TransactionsController < ApplicationController
+  include Modules::Messages
   after_action :update_user_rewards, only: [:create]
   after_action :update_user_points, only: [:create]
 

@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  include Modules::Messages
   before_action :check_authorization
   after_action :create_reward_record, only: [:create]
 

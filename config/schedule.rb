@@ -13,6 +13,7 @@ end
 
 every '0 0 1 * *' do # Many shortcuts available: :hour, :day, :month, :year, :reboot
   # check if user has 100 points an give free cofee reward
+  runner 'CheckMonthlySpentJob.perform_now'
 end
 
 every '0 0 * * *' do # Many shortcuts available: :hour, :day, :month, :year, :reboot
