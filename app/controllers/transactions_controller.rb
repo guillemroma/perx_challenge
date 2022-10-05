@@ -33,7 +33,7 @@ class TransactionsController < ApplicationController
     service = UpdateUserPoints.new(update_user_points_and_rewards_params)
 
     if service.call
-      success_flash_message(:alert, "Points were successfully created")
+      success_flash_message(:alert, "Points were successfully updated")
     else
       error_flash_message(:alert, service.errors)
     end
@@ -42,24 +42,11 @@ class TransactionsController < ApplicationController
   def update_user_rewards
     service = UpdateUserRewards.new(update_user_points_and_rewards_params)
 
-    if service.call
-      success_flash_message(:alert, "Rewards were successfully created")
-    else
-      error_flash_message(:alert, service.errors)
-    end
+    service.call
+    success_flash_message(:alert, "Rewards were successfully updated")
   end
 
   def update_user_points_and_rewards_params
     params["user_id"]
-  end
-
-  def success_flash_message(type, text)
-    flash[type] ||= []
-    flash[type] << text
-  end
-
-  def error_flash_message(type, text)
-    flash[type] ||= []
-    flash[type] << text
   end
 end

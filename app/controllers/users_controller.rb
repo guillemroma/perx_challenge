@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :check_authorization
+  after_action :create_reward_record, only: [:create]
 
   def index
     @clients = User.clients.includes(:point)
@@ -21,10 +22,10 @@ class UsersController < ApplicationController
     service = UpdateUser.new(user_create_and_update_params.merge(id: params[:id]))
 
     if service.call
-      flash[:alert] = "User was successfully updated"
+      success_flash_message(:alert, "User was successfully updated")
       redirect_to(users_path)
     else
-      flash[:alert] = service.errors
+      error_flash_message(:alert, service.errors)
       redirect_to(new_user_path)
     end
   end
@@ -33,10 +34,10 @@ class UsersController < ApplicationController
     service = CreateUser.new(user_create_and_update_params)
 
     if service.call
-      flash[:alert] = "User was successfully created"
+      success_flash_message(:alert, "User was successfully created")
       redirect_to(users_path)
     else
-      flash[:alert] = service.errors
+      error_flash_message(:alert, service.errors)
       redirect_to(new_user_path)
     end
   end
@@ -45,9 +46,9 @@ class UsersController < ApplicationController
     service = DestroyUser.new(params[:id])
 
     if service.call
-      flash[:alert] = "User was successfully deleted"
+      success_flash_message(:alert, "User was successfully deleted")
     else
-      flash[:alert] = service.errors
+      error_flash_message(:alert, service.errors)
     end
     redirect_to(users_path)
   end
@@ -60,5 +61,15 @@ class UsersController < ApplicationController
 
   def user_create_and_update_params
     params.require(:user).permit(:email, :country, :birthday, :user_type, :password)
+  end
+
+  def create_reward_record
+    service = CreateRewardRecord.new(params["user"]["email"])
+
+    if service.call
+      success_flash_message(:alert, "Reward record was successfully created")
+    else
+      error_flash_message(:alert, service.errors)
+    end
   end
 end

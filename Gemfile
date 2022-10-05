@@ -32,6 +32,7 @@ gem 'devise'
 gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'
 gem "pundit"
 gem 'whenever', require: false
+gem 'pry', '~> 0.13.1'
 
 gem 'autoprefixer-rails', '10.2.5'
 gem 'font-awesome-sass', '~> 5.6.1'

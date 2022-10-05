@@ -17,9 +17,9 @@ ActiveRecord::Schema.define(version: 2022_10_03_103923) do
 
   create_table "memberships", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.boolean "standard"
-    t.boolean "gold"
-    t.boolean "platinium"
+    t.boolean "standard", default: true
+    t.boolean "gold", default: false
+    t.boolean "platinium", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_memberships_on_user_id"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2022_10_03_103923) do
 
   create_table "points", force: :cascade do |t|
     t.bigint "user_id", null: false
+    t.integer "amount_prior_month"
     t.integer "amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

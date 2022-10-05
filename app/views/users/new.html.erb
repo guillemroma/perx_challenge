@@ -20,7 +20,7 @@
                     autofocus: true,
                     html5: true,
                     input_html: { autocomplete: "birthday" }%>
-        <%= f.hidden_field :user_type, input_html: { value: "client" } %>
+        <%= f.input :user_type, as: :hidden, input_html: { value: "client" } %>
         <%= f.input :password,
                     required: true,
                     hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),

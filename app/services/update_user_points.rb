@@ -12,11 +12,11 @@ class UpdateUserPoints
   private
 
   def update_or_create_user_points
-    @user_transactions = obtain_user_transactions
+    @user_transactions = user_transactions
     update_or_create_points
   end
 
-  def obtain_user_transactions
+  def user_transactions
     Transaction.where(user: @user)
   end
 

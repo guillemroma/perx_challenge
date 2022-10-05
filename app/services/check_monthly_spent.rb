@@ -1,20 +1,20 @@
-class CheckBirthday
+class CheckMonthlySpent
   def initialize
   end
 
   def call
-    @today = Date.today
+    @current_month = Date.today.month
     @clients = select_all_clients
-    check_birthday
+    check_monthly_spent
   end
 
   private
 
   def select_all_clients
-    User.clients
+    User.clients.includes(:points)
   end
 
-  def check_birthday
+  def check_monthly_spent
     @clients.each do |client|
       if find_user_rewards(client)
         @user_rewards = find_user_rewards(client)
@@ -22,7 +22,7 @@ class CheckBirthday
         @user_rewards = crate_new_rewards(client)
       end
 
-      updates_reward_record if client.birthday == @today
+      updates_reward_record if client.point == @today
     end
   end
 

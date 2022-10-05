@@ -4,10 +4,10 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :rewards, dependent: :destroy
   has_many :transactions, dependent: :destroy
   has_many :point_records, dependent: :destroy
 
+  has_one :reward, dependent: :destroy
   has_one :point, dependent: :destroy
   has_one :membership, dependent: :destroy
 

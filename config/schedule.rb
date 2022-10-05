@@ -17,6 +17,14 @@ end
 
 every '0 0 * * *' do # Many shortcuts available: :hour, :day, :month, :year, :reboot
   # check if it is users birthday and give free cofee reward
-  runner 'Reward.check_birthday'
+  runner 'CheckBirthdayJob.perform_now'
+  # checks if spending is > 1000 in the first 60 days since 1st transaction and gives movie tickets
+end
+
+# REMOVE ONCE WORKING
+
+every 1.minute do # Many shortcuts available: :hour, :day, :month, :year, :reboot
+  # check if it is users birthday and give free cofee reward
+  runner 'CheckBirthdayJob.perform_now'
   # checks if spending is > 1000 in the first 60 days since 1st transaction and gives movie tickets
 end
