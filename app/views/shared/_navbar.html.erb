@@ -1,7 +1,13 @@
 <div class="navbar navbar-expand-sm navbar-light navbar">
   <div class="container-fluid">
-    <%= link_to "/", class: "navbar-brand" do %>
-      <p><strong>Perx Technologies</strong></p>
+    <% if current_user.user_type == "corporation" %>
+      <%= link_to users_path, class: "navbar-brand" do %>
+        <p><strong>Perx Technologies</strong></p>
+      <% end %>
+    <% else %>
+      <%= link_to dashboard_user_path(current_user.id), class: "navbar-brand" do %>
+        <p><strong>Perx Technologies</strong></p>
+      <% end %>
     <% end %>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
