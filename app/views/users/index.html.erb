@@ -12,17 +12,17 @@
       </tr>
     </thead>
     <% @clients.each do | client| %>
-    <tr>
-      <td style="width: 20%"> <%= client.email %> </td>
-      <td style="width: 20%"> <%= client.country %> </td>
-      <td style="width: 15%"> <%= client.point&.amount.nil? ? 0 : client.point.amount %> </td>
-      <td style="width: 45%">
-        <%= link_to "Add New Transaction", new_user_transaction_path(client.id), class: "link" %> |
-        <%= link_to "Show Transactions", user_transactions_path(client.id), class: "link" %> |
-        <%= link_to "Update Client", edit_user_path(client.id), class: "link" %> |
-        <%= link_to "Delete Client", user_path(client.id), class: "link", method: :delete %>
-      </td>
-    </tr>
+      <tr>
+        <td style="width: 20%"> <%= client.email %> </td>
+        <td style="width: 20%"> <%= client.country %> </td>
+        <td style="width: 15%"> <%= client.point&.amount.nil? ? 0 : number_with_delimiter(client.point.amount, :delimiter => ',') %> </td>
+        <td style="width: 45%">
+          <%= link_to "Add New Transaction", new_user_transaction_path(client.id), class: "link" %> |
+          <%= link_to "Show Transactions", user_transactions_path(client.id), class: "link" %> |
+          <%= link_to "Update Client", edit_user_path(client.id), class: "link" %> |
+          <%= link_to "Delete Client", user_path(client.id), class: "link", method: :delete %>
+        </td>
+      </tr>
     <% end %>
   </table>
 </div>

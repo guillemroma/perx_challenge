@@ -1,0 +1,23 @@
+<div class="container mt-4">
+  <h1>Transactions overview</h1>
+  <br>
+  <%= link_to "Create new Transaction", new_user_transaction_path, class: "btn btn-dark mb-5" %>
+  <table class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>User email</th>
+        <th>Amount</th>
+        <th>Country</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <% @transactions.each do |transaction| %>
+      <tr>
+        <td style="width: 25%"> <%= transaction.user.email %> </td>
+        <td style="width: 25%"> <%=  number_with_delimiter(transaction.amount, :delimiter => ',') %> € </td>
+        <td style="width: 25%"> <%= transaction.country %> </td>
+        <td style="width: 25%"> <%= transaction.date %> </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

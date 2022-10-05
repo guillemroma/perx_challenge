@@ -4,6 +4,8 @@ class TransactionsController < ApplicationController
   after_action :update_user_points, only: [:create]
 
   def index
+    user = User.find(params["user_id"])
+    @transactions = Transaction.where(user_id: user.id).includes(:user)
   end
 
   def new
