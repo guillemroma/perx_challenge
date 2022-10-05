@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_one :reward, dependent: :destroy
   has_one :point, dependent: :destroy
   has_one :membership, dependent: :destroy
+  has_one :tier_control, dependent: :destroy
+
 
   validates :email, presence: true
   validates :country, presence: true

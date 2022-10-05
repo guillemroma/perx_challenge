@@ -31,20 +31,11 @@ class TransactionsController < ApplicationController
   end
 
   def update_user_points
-    service = UpdateUserPoints.new(update_user_points_and_rewards_params)
-
-    if service.call
-      success_flash_message(:alert, "Points were successfully updated")
-    else
-      error_flash_message(:alert, service.errors)
-    end
+    UpdateUserPointsJob.perform_later(update_user_points_and_rewards_params)
   end
 
   def update_user_rewards
-    service = UpdateUserRewards.new(update_user_points_and_rewards_params)
-
-    service.call
-    success_flash_message(:alert, "Rewards were successfully updated")
+    UpdateUserRewardsJob.perform_later(update_user_points_and_rewards_params)
   end
 
   def update_user_points_and_rewards_params

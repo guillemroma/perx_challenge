@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_03_103923) do
+ActiveRecord::Schema.define(version: 2022_10_05_191608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,15 @@ ActiveRecord::Schema.define(version: 2022_10_03_103923) do
     t.index ["user_id"], name: "index_rewards_on_user_id"
   end
 
+  create_table "tier_controls", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "current_year"
+    t.string "last_year"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_tier_controls_on_user_id"
+  end
+
   create_table "transactions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.float "amount"
@@ -83,5 +92,6 @@ ActiveRecord::Schema.define(version: 2022_10_03_103923) do
   add_foreign_key "point_records", "users"
   add_foreign_key "points", "users"
   add_foreign_key "rewards", "users"
+  add_foreign_key "tier_controls", "users"
   add_foreign_key "transactions", "users"
 end

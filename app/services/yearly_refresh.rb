@@ -20,30 +20,17 @@ class YearlyRefresh
     @clients.each do |client|
       update_point_records(client)
       update_loyalty_tier(client)
-      update_reward(client)
-
+      update_client_rewards(client)
     end
 
-    reset_client_points_records
+    reset_client_points_records_and_tier_control
   end
 
   def update_point_records(client)
-    @client_points = find_client_points(client)
+    @client_points = find_record(Point, client)
     PointRecord.create!(user: client, amount: @client_points.amount, year: @current_year)
 
     reset_client_points(@client_points)
-  end
-
-  def find_client_points(client)
-    if find_points(client).present?
-      Point.find_by(user_id: client.id)
-    else
-      Point.create!(user_id: client.id, amount: 0)
-    end
-  end
-
-  def find_points(client)
-    Point.find_by(user_id: client.id)
   end
 
   def reset_client_points(client_points)
@@ -74,30 +61,11 @@ class YearlyRefresh
   end
 
   def update_membership(client, membership_type)
-    case membership_type
-    when :gold
-      update_membership_records(client, membership_type)
-    when :platinium
-      update_membership_records(client, membership_type)
-    when :standard
-      update_membership_records(client, membership_type)
-    end
-  end
-
-  def client_membership(client)
-    if find_membership(client).present?
-      Membership.find_by(user_id: client.id)
-    else
-      Membership.create!(user_id: client.id)
-    end
-  end
-
-  def find_membership(client)
-    Membership.find_by(user_id: client.id)
+    update_membership_records(client, membership_type)
   end
 
   def update_membership_records(client, membership_type)
-    membership = client_membership(client)
+    membership = find_record(Membership, client)
     Membership::MEMBERHSIP_TYPES.each do |m_type|
       if m_type == membership_type
         membership[m_type] = true
@@ -105,11 +73,52 @@ class YearlyRefresh
         membership[m_type] = false
       end
     end
-
+    update_tier_control(client, membership_type)
     membership.save!
   end
 
-  def reset_client_points_records
+  def update_tier_control(client, membership_type)
+    client_tier = find_record(TierControl, client)
+
+    client_tier.last_year = client_tier.current_year
+    client_tier.current_year = membership_type
+
+    client_tier.save!
+  end
+
+  def update_client_rewards(client)
+    @client_rewards = find_record(Reward, client)
+    update_rewards(client, @client_rewards)
+  end
+
+  def find_record(model, client)
+    if record_created?(model, client)
+      model.find_by(user_id: client.id)
+    else
+      model.create!(user_id: client.id)
+    end
+  end
+
+  def record_created?(model, client)
+    model.find_by(user_id: client.id)
+  end
+
+  def update_rewards(client, client_rewards)
+    update_airport_lounge_access_reward(client_rewards) if tier_turned_into_gold(client)
+  end
+
+  def tier_turned_into_gold(client)
+    user_tier_control = find_record(TierControl, client)
+    user_tier_control&.current_year == "gold" && user_tier_control&.last_year == "standard"
+  end
+
+  def update_airport_lounge_access_reward(client_rewards)
+    client_rewards.airport_lounge_access = true
+    client_rewards.save!
+  end
+
+  def reset_client_points_records_and_tier_control
     PointRecord.where.not(year: [@current_year, @current_year - 1]).destroy_all
+    TierControl.where.not(year: [@current_year, @current_year - 1]).destroy_all
   end
 end
