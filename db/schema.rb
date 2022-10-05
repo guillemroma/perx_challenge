@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 2022_10_03_103923) do
   create_table "points", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.integer "amount_prior_month"
-    t.integer "amount_prior_quarter"
     t.integer "amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

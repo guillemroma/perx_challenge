@@ -17,7 +17,15 @@ class UpdateUserRewards
   end
 
   def user_rewards
-    Reward.create!(user: @user) unless Reward.find_by(user: @user)
+    if find_reward
+      Reward.find_by(user: @user)
+    else
+      Reward.create!(user: @user)
+    end
+  end
+
+  def find_reward
+    Reward.find_by(user: @user)
   end
 
   def update_rewards

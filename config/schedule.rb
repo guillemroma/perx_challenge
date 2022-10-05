@@ -1,14 +1,15 @@
 env :PATH, ENV['PATH']
 set :output, './log/cron.log'
 
-every '0 0 1 1 *' do # Many shortcuts available: :hour, :day, :month, :year, :reboot
+every '50 23 31 12 *' do # Many shortcuts available: :hour, :day, :month, :year, :reboot
   # points expiere + add points record record
   # calculate loyalty tier
   # add airport lounge reward if user becomes gold tier
 end
 
-every '0 0 31 3,6,9,12 *' do # Many shortcuts available: :hour, :day, :month, :year, :reboot
+every '50 23 31 3,6,9,12 *' do # Many shortcuts available: :hour, :day, :month, :year, :reboot
   # bonus points if spent is greater than 2k
+  runner 'CheckQuarterlySpentJob.perform_now'
 end
 
 every '0 0 1 * *' do # Many shortcuts available: :hour, :day, :month, :year, :reboot
