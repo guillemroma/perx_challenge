@@ -27,7 +27,7 @@ class UsersController < ApplicationController
       redirect_to(users_path)
     else
       error_flash_message(:alert, service.errors)
-      redirect_to(new_user_path)
+      redirect_to(edit_user_path(params[:id]))
     end
   end
 

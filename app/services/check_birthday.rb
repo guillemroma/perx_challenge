@@ -1,6 +1,6 @@
 class CheckBirthday
   include Modules::FindRewards
-  
+
   def initialize
   end
 

@@ -1,5 +1,6 @@
 class TransactionsController < ApplicationController
   include Modules::Messages
+  before_action :check_authorization
   after_action :update_user_rewards, only: [:create]
   after_action :update_user_points, only: [:create]
 
@@ -21,7 +22,7 @@ class TransactionsController < ApplicationController
       redirect_to(users_path)
     else
       error_flash_message(:alert, service.errors)
-      redirect_to(new_user_path)
+      redirect_to(new_user_transaction_path(params["user_id"]))
     end
   end
 
@@ -42,5 +43,9 @@ class TransactionsController < ApplicationController
 
   def update_user_points_and_rewards_params
     params["user_id"]
+  end
+
+  def check_authorization
+    authorize Transaction
   end
 end

@@ -13,10 +13,11 @@ module Dashboard
 
       if service.call
         flash[:alert] = "Reward Spent"
-        redirect_to(dashboard_user_path(params[:id]))
       else
         flash[:alert] = service.errors
       end
+
+      redirect_to(dashboard_user_path(params[:id]))
     end
   end
 end

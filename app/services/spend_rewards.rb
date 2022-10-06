@@ -1,7 +1,9 @@
 class SpendRewards
   include Modules::RecordFinder
 
-  attr_reader :user, :reward
+  attr_reader :user, :user_rewards
+
+  delegate :errors, to: :user_rewards
 
   def initialize(user_id:, reward_type:)
     @user = User.find(user_id)
