@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_05_191608) do
+ActiveRecord::Schema.define(version: 2022_10_06_110107) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "airport_lounge_controls", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "remaining"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_airport_lounge_controls_on_user_id"
+  end
 
   create_table "memberships", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -28,7 +36,7 @@ ActiveRecord::Schema.define(version: 2022_10_05_191608) do
   create_table "point_records", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.integer "year"
-    t.integer "amount"
+    t.bigint "amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_point_records_on_user_id"
@@ -36,11 +44,22 @@ ActiveRecord::Schema.define(version: 2022_10_05_191608) do
 
   create_table "points", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.integer "amount_prior_month"
-    t.integer "amount"
+    t.bigint "amount_prior_month"
+    t.bigint "amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_points_on_user_id"
+  end
+
+  create_table "reward_elegibles", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.boolean "free_coffee", default: true
+    t.boolean "cash_rebate", default: true
+    t.boolean "free_movie_tickets", default: true
+    t.boolean "airport_lounge_access", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_reward_elegibles_on_user_id"
   end
 
   create_table "rewards", force: :cascade do |t|
@@ -56,7 +75,7 @@ ActiveRecord::Schema.define(version: 2022_10_05_191608) do
 
   create_table "tier_controls", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "current_year"
+    t.string "current_year", default: "standard"
     t.string "last_year"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -88,9 +107,11 @@ ActiveRecord::Schema.define(version: 2022_10_05_191608) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "airport_lounge_controls", "users"
   add_foreign_key "memberships", "users"
   add_foreign_key "point_records", "users"
   add_foreign_key "points", "users"
+  add_foreign_key "reward_elegibles", "users"
   add_foreign_key "rewards", "users"
   add_foreign_key "tier_controls", "users"
   add_foreign_key "transactions", "users"

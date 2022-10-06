@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :dashboards, only: [:new]
 
   namespace :dashboard, only: [] do
-    resources :users, only: [:show]
+    resources :users, only: [:show, :update]
   end
 
   require "sidekiq/web"

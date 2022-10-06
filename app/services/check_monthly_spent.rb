@@ -7,6 +7,7 @@ class CheckMonthlySpent
   def call
     @clients = select_all_clients
     check_monthly_spent
+    reset_free_coffee_elegibility
   end
 
   private
@@ -54,5 +55,10 @@ class CheckMonthlySpent
 
   def total_points_last_month(client)
     client.point&.amount_prior_month.nil? ? 0 : client.point.amount_prior_month
+  end
+
+  def reset_free_coffee_elegibility
+    PointRecord.where.not(year: [@current_year, @current_year - 1]).destroy_all
+    RewardElegible.all.update_all(free_coffee: true)
   end
 end

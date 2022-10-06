@@ -1,2 +1,67 @@
-<h1>Users#show</h1>
-<p>Find me in app/views/users/show.html.erb</p>
+<div class="container mt-4">
+  <h1>Your Rewards</h1>
+  <p>Current Membership:
+  <% if @membership&.gold %>
+       <strong>Gold</strong>
+  <% elsif @membership&.platinium %>
+       <strong>Platinium</strong>
+  <% else %>
+       <strong>Standard</strong>
+  <% end %>
+  </p>
+  <br>
+  <table class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Type</th>
+        <th>Elegible?</th>
+        <th>Remaning</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tr>
+      <td style="width: 25%"> Free Coffee </td>
+      <td style="width: 25%"> <%= @rewards.free_coffee %> </td>
+      <td style="width: 25%"> <%= @rewards.free_coffee ? 1 : 0 %> </td>
+      <td style="width: 25%">
+        <% if @rewards.free_coffee %>
+          <%= link_to "Spend", dashboard_user_path(@client.id, reward: "free_coffee"), class: "link", method: :patch %>
+        <% end %>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="width: 25%"> 5% Cash Rebate </td>
+      <td style="width: 25%"> <%= @rewards.cash_rebate %> </td>
+      <td style="width: 25%"> <%= @rewards.cash_rebate ? 1 : 0 %> </td>
+      <td style="width: 25%">
+        <% if @rewards.cash_rebate %>
+          <%= link_to "Spend", dashboard_user_path(@client.id, reward: "cash_rebate"), class: "link", method: :patch %>
+        <% end %>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="width: 25%"> Free Movie Tickets </td>
+      <td style="width: 25%"> <%= @rewards.free_movie_tickets %> </td>
+      <td style="width: 25%"> <%= @rewards.free_movie_tickets ? 1 : 0 %> </td>
+      <td style="width: 25%">
+        <% if @rewards.free_movie_tickets %>
+          <%= link_to "Spend", dashboard_user_path(@client.id, reward: "free_movie_tickets"), class: "link", method: :patch %>
+        <% end %>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="width: 25%"> Airport Lounge Access </td>
+      <td style="width: 25%"> <%= @rewards.airport_lounge_access %> </td>
+      <td style="width: 25%"> <%= @airport_lounge_control ? @airport_lounge_control.remaining : 0 %> </td>
+      <td style="width: 25%">
+        <% if @rewards.airport_lounge_access %>
+          <%= link_to "Spend", dashboard_user_path(@client.id, reward: "airport_lounge_access"), class: "link", method: :patch %>
+        <% end %>
+      </td>
+    </tr>
+  </table>
+</div>
