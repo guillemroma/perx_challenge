@@ -1,47 +1,34 @@
 class UpdateUserPoints
+  include Modules::RecordFinder
+
   attr_reader :user
+  attr_accessor :user_transactions
 
   def initialize(arguments)
     @user = User.find(arguments)
+    @user_transactions = create_or_find_many_records(Transaction, @user)
   end
 
   def call
-    update_or_create_user_points
+    true if update_or_create_user_points
   end
 
   private
 
   def update_or_create_user_points
-    @user_transactions = user_transactions
-    update_or_create_points
-  end
-
-  def user_transactions
-    Transaction.where(user: @user)
+    user_points = create_or_find_one_record(Point, @user)
+    user_points.amount = ((local_transactions / 100).floor * standard_points) + ((foreign_transactions / 100).floor * standard_points(2))
+    user_points.save!
   end
 
   def local_transactions
-    local_transaction = @user_transactions.where(country: @user.country)
+    local_transaction = user_transactions.where(country: @user.country)
     local_transaction.sum(&:amount)
   end
 
   def foreign_transactions
-    foreign_transactions = @user_transactions.where.not(country: @user.country)
+    foreign_transactions = user_transactions.where.not(country: @user.country)
     foreign_transactions.sum(&:amount)
-  end
-
-  def update_or_create_points
-    if find_points
-      @user_points = find_points
-    else
-      @user_points = Point.new(user: @user)
-    end
-    @user_points.amount = (local_transactions / 100 * standard_points) + (foreign_transactions / 100 * standard_points(2))
-    @user_points.save!
-  end
-
-  def find_points
-    Point.find_by(user: @user)
   end
 
   def standard_points(multiplier = 1)

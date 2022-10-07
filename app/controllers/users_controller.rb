@@ -1,7 +1,10 @@
 class UsersController < ApplicationController
   include Modules::Messages
+  include Modules::RecordFinder
+
   before_action :check_authorization
   after_action :create_reward_record, only: [:create]
+  after_action :create_tier_control_and_reward_elegibiity, only: [:create]
 
   def index
     @clients = User.clients.includes(:point)
@@ -72,5 +75,10 @@ class UsersController < ApplicationController
     else
       error_flash_message(:alert, service.errors)
     end
+  end
+
+  def create_tier_control_and_reward_elegibiity
+    create_or_find_one_record(TierControl, User.last)
+    create_or_find_one_record(RewardElegible, User.last)
   end
 end

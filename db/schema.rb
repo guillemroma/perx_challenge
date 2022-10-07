@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2022_10_06_110107) do
 
   create_table "airport_lounge_controls", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.integer "remaining"
+    t.integer "remaining", default: 4
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_airport_lounge_controls_on_user_id"
@@ -44,8 +44,8 @@ ActiveRecord::Schema.define(version: 2022_10_06_110107) do
 
   create_table "points", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "amount_prior_month"
-    t.bigint "amount"
+    t.bigint "amount_prior_month", default: 0
+    t.bigint "amount", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_points_on_user_id"

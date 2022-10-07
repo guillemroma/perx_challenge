@@ -1,6 +1,5 @@
 class CreateUser
   include ActiveModel::Model
-  include Modules::RecordFinder
 
   attr_reader :user, :email, :password, :user_type, :birthday, :country
 
@@ -24,8 +23,6 @@ class CreateUser
     )
 
     return false unless @user.save
-
-    create_or_find_one_record(TierControl, @user)
 
     true
   end

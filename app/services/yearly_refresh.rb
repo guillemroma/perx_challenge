@@ -1,14 +1,15 @@
 class YearlyRefresh
-  include Modules::FindRewards
   include Modules::RecordFinder
 
+  attr_reader :current_year
+
   def initialize
+    @current_year = Date.today.year
   end
 
   def call
-    @current_year = Date.today.year
     @clients = select_all_clients
-    point_refresh_and_membership_update
+    true if point_refresh_and_membership_update
   end
 
   private
@@ -28,9 +29,9 @@ class YearlyRefresh
   end
 
   def update_point_records(client)
-    @client_points = create_or_find_one_record(Point, client)
-    PointRecord.create!(user: client, amount: @client_points.amount, year: @current_year)
-    reset_client_points(@client_points)
+    client_points = create_or_find_one_record(Point, client)
+    create_or_find_many_records(PointRecord, client, current_year, client_points.amount)
+    reset_client_points(client_points)
   end
 
   def reset_client_points(client_points)
@@ -39,10 +40,10 @@ class YearlyRefresh
   end
 
   def update_loyalty_tier(client)
-    if create_or_find_many_records(PointRecord, client, @current_year).maximum(:amount) > 1_000
-      update_membership(client, :gold)
-    elsif create_or_find_many_records(PointRecord, client, @current_year).maximum(:amount) > 5_000
+    if create_or_find_many_records(PointRecord, client, current_year).maximum(:amount) > 5_000
       update_membership(client, :platinium)
+    elsif create_or_find_many_records(PointRecord, client, current_year).maximum(:amount) > 1_000
+      update_membership(client, :gold)
     else
       update_membership(client, :standard)
     end
@@ -100,7 +101,7 @@ class YearlyRefresh
   end
 
   def reset_client_points_records_and_elegibility
-    PointRecord.where.not(year: [@current_year, @current_year - 1]).destroy_all
+    PointRecord.where.not(year: [current_year, current_year - 1]).destroy_all
     RewardElegible.all.update_all(
       free_coffee: true,
       cash_rebate: true,

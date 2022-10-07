@@ -1,18 +1,17 @@
 class CreateRewardRecord
   include ActiveModel::Model
+  include Modules::RecordFinder
 
-  attr_reader :user, :reward
+  attr_reader :user
 
-  delegate :errors, to: :reward
+  delegate :errors, to: Reward
 
   def initialize(email)
     @user = User.find_by(email: email)
   end
 
   def call
-    @reward = Reward.new(user: @user)
-
-    return false unless @reward.save
+    return false unless create_or_find_one_record(Reward, @user)
 
     true
   end

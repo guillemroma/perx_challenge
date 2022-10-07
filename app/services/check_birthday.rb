@@ -1,5 +1,5 @@
 class CheckBirthday
-  include Modules::FindRewards
+  include Modules::RecordFinder
 
   def initialize
   end
@@ -7,7 +7,7 @@ class CheckBirthday
   def call
     @today = Date.today
     @clients = select_all_clients
-    check_birthday
+    true if check_birthday
   end
 
   private
@@ -18,18 +18,13 @@ class CheckBirthday
 
   def check_birthday
     @clients.each do |client|
-      if find_user_rewards(client)
-        @user_rewards = find_user_rewards(client)
-      else
-        @user_rewards = crate_new_rewards(client)
-      end
-
-      updates_reward_record if client.birthday == @today
+      user_rewards = create_or_find_one_record(Reward, client)
+      updates_reward_record(user_rewards) if client.birthday == @today
     end
   end
 
-  def updates_reward_record
-    @user_rewards.free_coffee = true
-    @user_rewards.save!
+  def updates_reward_record(user_rewards)
+    user_rewards.free_coffee = true
+    user_rewards.save!
   end
 end

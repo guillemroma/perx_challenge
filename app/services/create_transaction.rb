@@ -1,7 +1,7 @@
 class CreateTransaction
   include ActiveModel::Model
 
-  attr_reader :transaction, :user, :amount, :date, :country
+  attr_reader :user, :amount, :date, :country, :transaction
 
   delegate :errors, to: :transaction
 
@@ -14,10 +14,10 @@ class CreateTransaction
 
   def call
     @transaction = Transaction.new(
-      user: @user,
-      amount: @amount,
-      date: @date,
-      country: @country
+      user: user,
+      amount: amount,
+      date: date,
+      country: country
     )
 
     return false unless @transaction.save

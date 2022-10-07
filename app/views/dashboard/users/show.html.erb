@@ -14,7 +14,7 @@
     <thead class="table-dark">
       <tr>
         <th>Type</th>
-        <th>Elegible?</th>
+        <th>Available?</th>
         <th>Remaning</th>
         <th>Action</th>
       </tr>
@@ -22,8 +22,8 @@
 
     <tr>
       <td style="width: 25%"> Free Coffee </td>
-      <td style="width: 25%"> <%= @rewards&.free_coffee %> </td>
-      <td style="width: 25%"> <%= @rewards&.free_coffee ? 1 : 0 %> </td>
+      <td style="width: 25%"> <%= @rewards&.free_coffee ? "Yes" : "No" %> </td>
+      <td style="width: 25%"> <%= @rewards&.free_coffee ? 1 : "-" %> </td>
       <td style="width: 25%">
         <% if @rewards&.free_coffee %>
           <%= link_to "Spend", dashboard_user_path(@client.id, reward: "free_coffee"), class: "link", method: :patch %>
@@ -33,8 +33,8 @@
 
     <tr>
       <td style="width: 25%"> 5% Cash Rebate </td>
-      <td style="width: 25%"> <%= @rewards&.cash_rebate %> </td>
-      <td style="width: 25%"> <%= @rewards&.cash_rebate ? 1 : 0 %> </td>
+      <td style="width: 25%"> <%= @rewards&.cash_rebate ? "Yes" : "No" %> </td>
+      <td style="width: 25%"> <%= @rewards&.cash_rebate ? 1 : "-" %> </td>
       <td style="width: 25%">
         <% if @rewards&.cash_rebate %>
           <%= link_to "Spend", dashboard_user_path(@client.id, reward: "cash_rebate"), class: "link", method: :patch %>
@@ -44,8 +44,8 @@
 
     <tr>
       <td style="width: 25%"> Free Movie Tickets </td>
-      <td style="width: 25%"> <%= @rewards&.free_movie_tickets %> </td>
-      <td style="width: 25%"> <%= @rewards&.free_movie_tickets ? 1 : 0 %> </td>
+      <td style="width: 25%"> <%= @rewards&.free_movie_tickets ? "Yes" : "No" %> </td>
+      <td style="width: 25%"> <%= @rewards&.free_movie_tickets ? 1 : "-" %> </td>
       <td style="width: 25%">
         <% if @rewards&.free_movie_tickets %>
           <%= link_to "Spend", dashboard_user_path(@client.id, reward: "free_movie_tickets"), class: "link", method: :patch %>
@@ -55,8 +55,8 @@
 
     <tr>
       <td style="width: 25%"> Airport Lounge Access </td>
-      <td style="width: 25%"> <%= @rewards&.airport_lounge_access %> </td>
-      <td style="width: 25%"> <%= @airport_lounge_control ? @airport_lounge_control.remaining : 0 %> </td>
+      <td style="width: 25%"> <%= @rewards&.airport_lounge_access ? "Yes" : "No" %> </td>
+      <td style="width: 25%"> <%= @airport_lounge_control ? @airport_lounge_control.remaining : "-" %> </td>
       <td style="width: 25%">
         <% if @rewards&.airport_lounge_access %>
           <%= link_to "Spend", dashboard_user_path(@client.id, reward: "airport_lounge_access"), class: "link", method: :patch %>

@@ -1,7 +1,8 @@
 module Dashboard
   class UsersController < ApplicationController
+    before_action :check_authorization
+
     def show
-      authorize([:dashboard, User])
       @client = User.find(params[:id])
       @rewards = Reward.find_by(user_id: params[:id])
       @airport_lounge_control = AirportLoungeControl.find_by(user_id: params[:id])
@@ -18,6 +19,12 @@ module Dashboard
       end
 
       redirect_to(dashboard_user_path(params[:id]))
+    end
+
+    private
+
+    def check_authorization
+      authorize([:dashboard, User])
     end
   end
 end

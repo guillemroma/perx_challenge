@@ -30,6 +30,7 @@ describe 'User requests', type: :request do
         get users_path
 
         expect(response).to(have_http_status(302))
+        expect(response).to(redirect_to(root_path))
       end
     end
 
@@ -46,6 +47,7 @@ describe 'User requests', type: :request do
         get users_path
 
         expect(response).to(have_http_status(302))
+        expect(response).to(redirect_to(root_path))
       end
     end
 
@@ -62,6 +64,7 @@ describe 'User requests', type: :request do
         get new_user_path
 
         expect(response).to(have_http_status(302))
+        expect(response).to(redirect_to(root_path))
       end
     end
 
@@ -78,18 +81,22 @@ describe 'User requests', type: :request do
         get edit_user_path(@client.id)
 
         expect(response).to(have_http_status(302))
+        expect(response).to(redirect_to(root_path))
       end
     end
 
 
-    context 'Dashboard' do
-      it 'redirects to "dashboard_user_path"' do
+    context 'Dashboard New' do
+      it 'returns status 302 and redirects to "dashboard_user_path"' do
         login_as(@client)
         get new_dashboard_path
 
+        expect(response).to(have_http_status(302))
         expect(response).to(redirect_to(dashboard_user_path(@client.id)))
       end
+    end
 
+    context 'Dashboard::User Show' do
       it 'returns status 200 if user is authorized' do
         login_as(@client)
         get dashboard_user_path(@client.id)
@@ -102,13 +109,14 @@ describe 'User requests', type: :request do
         get dashboard_user_path(@client.id)
 
         expect(response).to(have_http_status(302))
+        expect(response).to(redirect_to(root_path))
       end
     end
   end
 
   describe 'POST REQUESTS' do
     context 'User Create' do
-      it 'redirects to "users_path" if user created' do
+      it 'returns status 302 and redirects to "users_path" if user is authorized' do
         login_as(@corporation)
         post users_path(
           user: {
@@ -119,11 +127,11 @@ describe 'User requests', type: :request do
             country: User::COUNTRIES.sample
           }
         )
-
+        expect(response).to(have_http_status(302))
         expect(response).to(redirect_to(users_path))
       end
 
-      it 'redirects to "new_user_path" if user NOT created' do
+      it 'returns status 302 and redirects to "new_user_path"  if user is authorized BUT new user NOT created' do
         login_as(@corporation)
         post users_path(
           user: {
@@ -134,15 +142,30 @@ describe 'User requests', type: :request do
             country: User::COUNTRIES.sample
           }
         )
-
+        expect(response).to(have_http_status(302))
         expect(response).to(redirect_to(new_user_path))
+      end
+
+      it 'returns status 302 if user is NOT authorized' do
+        login_as(@client)
+        post users_path(
+          user: {
+            email: "test@test.com",
+            password: 123456,
+            user_type: "client",
+            birthday: Faker::Date.birthday,
+            country: User::COUNTRIES.sample
+          }
+        )
+        expect(response).to(have_http_status(302))
+        expect(response).to(redirect_to(root_path))
       end
     end
   end
 
   describe 'PATCH REQUESTS' do
     context 'User Update' do
-      it 'redirects to "users_path" if user edited' do
+      it 'returns status 302 and redirects to "users_path" if user is authorized' do
         login_as(@corporation)
         patch user_path(
           id: @client.id,
@@ -152,12 +175,12 @@ describe 'User requests', type: :request do
             country: User::COUNTRIES.sample
           }
         )
-
+        expect(response).to(have_http_status(302))
         expect(response).to(redirect_to(users_path))
       end
 
-      it 'redirects to "edit_user_path" if user NOT edited' do
-        login_as(@corporation)
+      it 'returns status 302 if user is NOT authorized' do
+        login_as(@client)
         patch user_path(
           id: @client.id,
           user: {
@@ -166,28 +189,45 @@ describe 'User requests', type: :request do
             country: User::COUNTRIES.sample
           }
         )
-
-        expect(response).to(redirect_to(edit_user_path(@client.id)))
+        expect(response).to(have_http_status(302))
+        expect(response).to(redirect_to(root_path))
       end
     end
 
-    context 'User Dashboard Update' do
-      it 'redirects to "dashboard_user_path" if user edited' do
-        login_as(@corporation)
+    context 'Dashboard::User Update' do
+      it 'returns status 302 and redirects to "user_path" if user is authorized' do
+        login_as(@client)
         patch dashboard_user_path(@client.id)
 
         expect(response).to(redirect_to(dashboard_user_path(@client.id)))
+      end
+
+      it 'returns status 302 if user is NOT authorized' do
+        login_as(@corporation)
+        patch dashboard_user_path(@client.id)
+
+        expect(response).to(have_http_status(302))
+        expect(response).to(redirect_to(root_path))
       end
     end
   end
 
   describe 'DELETE REQUESTS' do
     context "User Destroy" do
-      it 'redirects to "users_path" if user destroyed' do
+      it 'returns status 302 and redirects to "users_path" if user is authorized' do
         login_as(@corporation)
         delete user_path(@client.id)
 
+        expect(response).to(have_http_status(302))
         expect(response).to(redirect_to(users_path))
+      end
+
+      it 'returns status 302 if user is NOT authorized' do
+        login_as(@client)
+        delete user_path(@client.id)
+
+        expect(response).to(have_http_status(302))
+        expect(response).to(redirect_to(root_path))
       end
     end
   end
