@@ -24,7 +24,7 @@ class YearlyRefresh
     @clients.each do |client|
       update_point_records(client)
       update_loyalty_tier(client)
-      update_client_rewards(client)
+      update_rewards(client)
     end
   end
 
@@ -41,16 +41,12 @@ class YearlyRefresh
 
   def update_loyalty_tier(client)
     if create_or_find_many_records(PointRecord, client, current_year).maximum(:amount) > 5_000
-      update_membership(client, :platinium)
+      update_membership_records(client, :platinium)
     elsif create_or_find_many_records(PointRecord, client, current_year).maximum(:amount) > 1_000
-      update_membership(client, :gold)
+      update_membership_records(client, :gold)
     else
-      update_membership(client, :standard)
+      update_membership_records(client, :standard)
     end
-  end
-
-  def update_membership(client, membership_type)
-    update_membership_records(client, membership_type)
   end
 
   def update_membership_records(client, membership_type)
@@ -75,12 +71,8 @@ class YearlyRefresh
     client_tier.save!
   end
 
-  def update_client_rewards(client)
-    @client_rewards = create_or_find_one_record(Reward, client)
-    update_rewards(client, @client_rewards)
-  end
-
-  def update_rewards(client, client_rewards)
+  def update_rewards(client)
+    client_rewards = create_or_find_one_record(Reward, client)
     update_airport_lounge_access_reward(client, client_rewards) if tier_turned_into_gold(client)
     false
   end

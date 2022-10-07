@@ -84,6 +84,7 @@ describe 'Yearly Refresh Service', type: :service do
     service.call
 
     expect(TierControl.find_by(user_id: @money.id).current_year).to eq("gold")
+    expect(Membership.find_by(user_id: @money.id).gold).to be(true)
   end
 
   it 'updates to Platinium tier if user has > 5000 points (in the last 2 cycles)' do
@@ -100,5 +101,39 @@ describe 'Yearly Refresh Service', type: :service do
     service.call
 
     expect(TierControl.find_by(user_id: @money.id).current_year).to eq("platinium")
+    expect(Membership.find_by(user_id: @money.id).platinium).to be(true)
+  end
+
+  it 'updates airport lounge acces reward if client was Standard and turns Gold' do
+    service = YearlyRefresh.new
+    service.call
+
+    expect(Reward.find_by(user_id: @money.id).airport_lounge_access).to eq(true)
+  end
+
+  it 'does NOT update airport lounge acces reward if client was Standard and turns Platinium' do
+    Transaction.create!(
+      user_id: @money.id,
+      country: @money.country,
+      amount: 1_000_000,
+      date: Date.today
+    )
+
+    UpdateUserPoints.new(@money.id).call
+
+    service = YearlyRefresh.new
+    service.call
+
+    expect(Reward.find_by(user_id: @money.id).airport_lounge_access).to eq(false)
+  end
+
+  it 'does NOT updates airport lounge acces reward if client was Standard and remains Standard' do
+    @other_user = FactoryBot.create(:user_client, email: "test2@test.com")
+    TierControl.create!(user_id: @other_user.id)
+
+    service = YearlyRefresh.new
+    service.call
+
+    expect(Reward.find_by(user_id: @other_user.id).airport_lounge_access).to eq(false)
   end
 end
