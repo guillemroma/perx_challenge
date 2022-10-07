@@ -3,7 +3,7 @@ require 'json'
 require 'support/factory_bot'
 require 'pry'
 
-describe CheckBirthdayJob, type: :job do
+describe YearlyRefreshJob, type: :job do
   include ActiveJob::TestHelper
 
   subject(:job_later) { described_class.perform_later }
@@ -13,9 +13,9 @@ describe CheckBirthdayJob, type: :job do
       .to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size).by(1)
   end
 
-  it "Calls Check Birthday service" do
-    allow(CheckBirthday).to receive(:new).and_return(CheckBirthday.new)
-    expect_any_instance_of(CheckBirthday).to receive(:call)
+  it "Calls Yearly Refresh service" do
+    allow(YearlyRefresh).to receive(:new).and_return(YearlyRefresh.new)
+    expect_any_instance_of(YearlyRefresh).to receive(:call)
 
     described_class.perform_now
   end
