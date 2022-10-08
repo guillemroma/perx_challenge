@@ -48,6 +48,6 @@ Please refer to **spec** folder (disregard **test** folder)
 ## Next steps<br>
 How can it be improved?
 
-(1) If the app is finally released, multi-tenancy could be explored. The **Apartment** gem could be a great approach<br>
+(1) If the app is finally released, multi-tenancy could be explored. The **Apartment** gem could be a great choice<br>
 (2) Add **AuditLogs** to the most relevant transactions<br>
 (3) Add **begin** and **resque** where applicable<br>
