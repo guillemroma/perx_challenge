@@ -42,6 +42,9 @@ Authorization is based on user_type ("client" or "corporation").
 * **CreateAirportLoungeControl**: Only exists for those user's who earned the '4x Airport Lounge Access' reward. The model keeps track of the remaining accesses at any given time. Records are removed once there are no more remaining accesses.
 * **RewardElegible**: Keeps track of a given user's elegibility for any single reward. Reward Eligible is refreshed monthly, quarterly, yearly or never, depending on the reward.
 
+### Testing
+Please refer to **spec** folder (disregard "test" folder) 
+
 ## Next steps<br>
 How can it be improved?
 
