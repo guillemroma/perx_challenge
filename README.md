@@ -43,7 +43,7 @@ Authorization is based on user_type ("client" or "corporation").
 * **RewardElegible**: Keeps track of a given user's elegibility for any single reward. Reward Eligible is refreshed monthly, quarterly, yearly or never, depending on the reward.
 
 ### Testing
-Please refer to **spec** folder (disregard "test" folder) 
+Please refer to **spec** folder (disregard **test** folder)
 
 ## Next steps<br>
 How can it be improved?
