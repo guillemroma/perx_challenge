@@ -23,23 +23,26 @@ Run the following commands:<br>
 (5) rails db:seed<br>
 
 
-The seeds will provide an admin (user_type: "corporation") and 6 clients (user_type: "client")
+Seeds will ccreate an admin (user_type: "corporation") and 6 clients (user_type: "client")
 
 ## App's design and architecture<br>
 
 ### Authorization
-Authorization is based on user_type ("client" or "corporation"). "client" user_type is only allowed to access its own dashboard, claim its rewards and check its memberhsip. On the other side, "corporation" user_type can: (1) create new clients and edit existing ones, (2) create new transactions, (3) view client's points and transactions and (4) delete clients
+Authorization is based on user_type ("client" or "corporation"). 
+
+* A "client" user_type is only allowed to (1) access her own dashboard, (2) claim her rewards and (3) check her memberhsip.
+* A "corporation" user_type can: (1) create new clients and edit existing ones, (2) create new transactions, (3) view client's points and transactions and (4) delete clients
 
 ### Models and its use
 
-* **Point**: Keeps track of a given user'aggregated points from the current month and the prior one. Points are refreshed yearly. 
-* **Reward**: Keeps track of a given user's rewards. Rewards are refreshed daily, monthly, quarterly, yearly or never, depending on the reward.  
-* **Membership**: Keeps track of a given user's current membership type. Memberships are refreshed yearly. 
-* **Trasnaction**: Keeps track of a given user's transactions 
-* **PointRecord**: Keeps track of a given user's point at the end of every year. Records that belong to different years than the current one and the prior one, are destroyed.
-* **TierControl**: Keeps track of the membership type (current and prior year) of given user. 
-* **CreateAirportLoungeControl**: Only exists for those user's who earned the '4x Airport Lounge Access' reward. The model keeps track of the remaining accesses at any given time. Records are removed once there are no more accesses remaining.
-* **RewardElegible**: Keeps track of a given user's elegibility for any single reward.
+* **Point**: Keeps track of a given user's aggregated points from the current month and the prior one. Points are refreshed yearly. 
+* **Reward**: Keeps track of a given user's rewards. Rewards are refreshed daily, monthly, quarterly, yearly, depending on the reward.  
+* **Membership**: Keeps track of a given user's membership type. Memberships are refreshed yearly. 
+* **Transaction**: Keeps track of a given user's transactions records.
+* **PointRecord**: Keeps track of a given user's points, at the end of every year. Records that belong to different years than the current one and the prior one, are destroyed.
+* **TierControl**: Keeps track of the membership type (in the current and in the prior year) of given user. 
+* **CreateAirportLoungeControl**: Only exists for those user's who earned the '4x Airport Lounge Access' reward. The model keeps track of the remaining accesses at any given time. Records are removed once there are no more remaining accesses.
+* **RewardElegible**: Keeps track of a given user's elegibility for any single reward. Reward Eligible is refreshed monthly, quarterly, yearly or never, depending on the reward.
 
 ## Next steps<br>
 How can it be improved?
