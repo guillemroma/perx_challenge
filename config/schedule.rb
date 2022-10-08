@@ -17,12 +17,3 @@ end
 every '0 0 * * *' do # Many shortcuts available: :hour, :day, :month, :year, :reboot
   runner 'CheckBirthdayJob.perform_now'
 end
-
-# REMOVE ONCE WORKING
-
-every 1.minute do # Many shortcuts available: :hour, :day, :month, :year, :reboot
-  runner 'YearlyRefreshJob.perform_now'
-  runner 'CheckQuarterlySpentJob.perform_now'
-  runner 'CheckMonthlySpentJob.perform_now'
-  runner 'CheckBirthdayJob.perform_now'
-end

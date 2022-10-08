@@ -116,7 +116,7 @@ describe 'User requests', type: :request do
 
   describe 'POST REQUESTS' do
     context 'User Create' do
-      it 'returns status 302 and redirects to "users_path" if user is authorized' do
+      it 'returns status 302 and redirects to "users_path" if user is authorized; creates Reward Record, Tier Control and Reward Elegible records' do
         login_as(@corporation)
         post users_path(
           user: {
@@ -129,6 +129,8 @@ describe 'User requests', type: :request do
         )
         expect(response).to(have_http_status(302))
         expect(response).to(redirect_to(users_path))
+        expect(TierControl.count).to eq(1)
+        expect(RewardElegible.count).to eq(1)
       end
 
       it 'returns status 302 and redirects to "new_user_path"  if user is authorized BUT new user NOT created' do

@@ -3,6 +3,8 @@ require 'json'
 require 'support/factory_bot'
 
 describe 'Transaction requests', type: :request do
+  include ActiveJob::TestHelper
+
   before(:each) do
     @client = FactoryBot.create(:user_client)
     @corporation = FactoryBot.create(:user_corporation)
@@ -56,6 +58,9 @@ describe 'Transaction requests', type: :request do
         )
 
         expect(response).to(redirect_to(users_path))
+        expect(enqueued_jobs.size).to eq(2)
+        expect(enqueued_jobs.first[:job]).to eq(UpdateUserPointsJob)
+        expect(enqueued_jobs.last[:job]).to eq(UpdateUserRewardsJob)
       end
 
       it 'redirects to "new_user_transaction_path" if transaction NOT created' do
