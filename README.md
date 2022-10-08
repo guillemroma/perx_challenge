@@ -19,9 +19,7 @@ Run the following commands:<br>
 
 (3) sidekiq<br>
 
-(4) rails db:migrate<br>
-(5) rails db:seed<br>
-
+(4) rails db:prepare<br>
 
 Seeds will ccreate an admin (user_type: "corporation") and 6 clients (user_type: "client")
 
