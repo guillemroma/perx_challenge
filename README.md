@@ -19,9 +19,7 @@ Run the following commands:<br>
 
 (3) sidekiq<br>
 
-(4) rails db:migrate<br>
-(5) rails db:seed<br>
-
+(4) rails db:prepare<br>
 
 Seeds will ccreate an admin (user_type: "corporation") and 6 clients (user_type: "client")
 
@@ -44,9 +42,12 @@ Authorization is based on user_type ("client" or "corporation").
 * **CreateAirportLoungeControl**: Only exists for those user's who earned the '4x Airport Lounge Access' reward. The model keeps track of the remaining accesses at any given time. Records are removed once there are no more remaining accesses.
 * **RewardElegible**: Keeps track of a given user's elegibility for any single reward. Reward Eligible is refreshed monthly, quarterly, yearly or never, depending on the reward.
 
+### Testing
+Please refer to **spec** folder (disregard **test** folder)
+
 ## Next steps<br>
 How can it be improved?
 
-(1) If the app is finally released, multi-tenancy could be explored. The **Apartment** gem could be a great approach<br>
+(1) If the app is finally released, multi-tenancy could be explored. The **Apartment** gem could be a great choice<br>
 (2) Add **AuditLogs** to the most relevant transactions<br>
 (3) Add **begin** and **resque** where applicable<br>
