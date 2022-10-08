@@ -8,6 +8,8 @@ class CheckMonthlySpent
     @clients = select_all_clients
     return false unless check_monthly_spent
     return true if reset_free_coffee_elegibility
+
+    false
   end
 
   private
@@ -23,6 +25,8 @@ class CheckMonthlySpent
       updates_reward_record(user_rewards) if total_points_current_month(client) - total_points_last_month(client) > 100
       update_prior_months_points(client)
     end
+
+    true
   end
 
   def updates_reward_record(user_rewards)

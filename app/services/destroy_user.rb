@@ -10,8 +10,8 @@ class DestroyUser
   end
 
   def call
-    return false unless user.destroy
+    return true if user.destroy
 
-    true
+    false
   end
 end

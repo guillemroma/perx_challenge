@@ -10,7 +10,9 @@ class UpdateUserPoints
   end
 
   def call
-    true if update_or_create_user_points
+    return true if update_or_create_user_points
+
+    false
   end
 
   private

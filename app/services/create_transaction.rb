@@ -20,8 +20,8 @@ class CreateTransaction
       country: country
     )
 
-    return false unless @transaction.save
+    return true if @transaction.save
 
-    true
+    false
   end
 end

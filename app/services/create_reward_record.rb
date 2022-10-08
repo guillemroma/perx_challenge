@@ -11,8 +11,8 @@ class CreateRewardRecord
   end
 
   def call
-    return false unless create_or_find_one_record(Reward, @user)
+    return true if create_or_find_one_record(Reward, @user)
 
-    true
+    false
   end
 end

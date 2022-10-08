@@ -12,7 +12,9 @@ class UpdateUserRewards
   end
 
   def call
-    true if update_user_rewards
+    return true if update_user_rewards
+
+    false
   end
 
   private

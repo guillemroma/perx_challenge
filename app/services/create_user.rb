@@ -22,8 +22,8 @@ class CreateUser
       country: @country
     )
 
-    return false unless @user.save
+    return true if @user.save
 
-    true
+    false
   end
 end

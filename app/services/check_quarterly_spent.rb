@@ -6,7 +6,9 @@ class CheckQuarterlySpent
 
   def call
     @clients = select_all_clients
-    true if check_quarterly_spent
+    return true if check_quarterly_spent
+
+    false
   end
 
   private

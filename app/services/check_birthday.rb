@@ -7,7 +7,9 @@ class CheckBirthday
   def call
     @today = Date.today
     @clients = select_all_clients
-    true if check_birthday
+    return true if check_birthday
+
+    false
   end
 
   private

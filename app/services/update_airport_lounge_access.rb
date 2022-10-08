@@ -12,7 +12,9 @@ class UpdateAirportLoungeAccess
   end
 
   def call
-    true if update_airport_lounge_accesses
+    return true if update_airport_lounge_accesses
+
+    false
   end
 
   private
