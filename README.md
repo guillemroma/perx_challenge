@@ -13,7 +13,7 @@ Run the following commands:<br>
 (1) bundle install<br>
 
 (2.1) crontab -r<br>
-(2.2) sudo service cron start
+(2.2) sudo service cron start<br>
 (2.3) sudo service cron status -> make sure that it returns 'cron is running'<br>
 (2.4) whenever --update-crontab --set environment='development'<br>
 
